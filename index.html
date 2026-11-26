@@ -56,11 +56,19 @@ input[type=text],input[type=password]{width:100%;padding:14px;font:inherit;font-
 select{font:inherit;padding:8px;border-radius:12px;border:2px solid #eadfb8;width:100%;background:#fff}
 .sticker{font-size:2.7rem;text-align:center;background:#fff;border-radius:18px;padding:8px 4px;box-shadow:0 3px 0 #0002;line-height:1.2}.sticker.no{filter:grayscale(1);opacity:.25}.sticker small{display:block;font-size:.8rem}
 @media(max-width:420px){.huge{font-size:5rem}.opt{font-size:3.2rem}.word{font-size:2rem}}
+.mx{position:fixed;right:10px;bottom:10px;z-index:50;display:flex;align-items:flex-end;gap:6px;pointer-events:none;transform:translateY(160%);transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.mx.on{transform:none}.mx .mb{background:#fff;border-radius:18px 18px 4px 18px;padding:8px 12px;max-width:210px;font-size:.95rem;line-height:1.3;font-weight:700;box-shadow:0 4px 0 #0002;margin-bottom:46px}
+.mx svg{animation:bob .9s ease-in-out infinite;filter:drop-shadow(0 4px 0 #0002)}@keyframes bob{50%{transform:translateY(-6px) rotate(-3deg)}}
+.mx .bk{transform-origin:32px 37px;animation:tk .22s ease-in-out infinite alternate}@keyframes tk{to{transform:scaleY(1.9)}}
+.mx .ey{transform-origin:32px 29px;animation:bl 3.2s infinite}@keyframes bl{0%,92%,100%{transform:none}95%{transform:scaleY(.1)}}
+.mx .wl{transform-origin:14px 40px;animation:wl .45s ease-in-out infinite alternate}.mx .wr{transform-origin:50px 40px;animation:wr .45s ease-in-out infinite alternate}@keyframes wl{to{transform:rotate(18deg)}}@keyframes wr{to{transform:rotate(-18deg)}}
+@media(prefers-reduced-motion:reduce){.mx svg,.mx .bk,.mx .ey,.mx .wl,.mx .wr{animation:none}}
 </style>
 </head>
 <body>
 <header></header>
 <div class="wrap" id="app"></div>
+<div class="mx" id="mx" aria-hidden="true"><div class="mb" id="mxt"></div><svg width="110" height="110" viewBox="0 0 64 64"><path d="M12 16 L22 23 L14 26 Z M52 16 L42 23 L50 26 Z" fill="#8B5E3C"/><ellipse class="wl" cx="13" cy="44" rx="5" ry="11" fill="#6E4529"/><ellipse class="wr" cx="51" cy="44" rx="5" ry="11" fill="#6E4529"/><ellipse cx="32" cy="38" rx="22" ry="24" fill="#8B5E3C"/><ellipse cx="32" cy="45" rx="13" ry="14" fill="#E9C9A0"/><g class="ey"><circle cx="23" cy="29" r="9" fill="#fff"/><circle cx="41" cy="29" r="9" fill="#fff"/><circle cx="24" cy="30" r="4.2" fill="#222"/><circle cx="40" cy="30" r="4.2" fill="#222"/><circle cx="25.3" cy="28.6" r="1.3" fill="#fff"/><circle cx="41.3" cy="28.6" r="1.3" fill="#fff"/></g><path class="bk" d="M29 36 L32 40 L35 36 Z" fill="#F2A33A"/><path d="M22 60 L26 56 L30 60 M34 60 L38 56 L42 60" stroke="#F2A33A" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
 <script>
 const B=[
 {t:"Hello!",es:"Saludos",e:"👋",w:[["hello","hola","👋","jelóu"],["goodbye","adiós","🙋","gudbái"],["please","por favor","🙏","plíis"],["thank you","gracias","💝","zénkiu"],["yes","sí","✅","iés"],["no","no","❌","nóu"],["friend","amigo","🤝","frend"],["name","nombre","📛","néim"]],
@@ -174,6 +182,7 @@ B[29]={t:"Big review",es:"¡Gran repaso!",e:"🏆",w:[0,1,3,5,7,12,17,23].map(k=
   tip:"¡Llegaste al último día! Hoy repasamos de todo un poco. ¡Eres un campeón! 🏆",rev:1};
 
 const D=B,ND=B.length;
+const HOY=["los saludos","los colores","los números","los animales",null,"la familia","las partes del cuerpo","la comida","la ropa",null,"la casa","el colegio","los juguetes","los sentimientos",null,"el clima","la naturaleza","las acciones","los deportes",null,"los oficios","el transporte","los lugares","los animales salvajes",null,"las frutas y verduras","la fiesta de cumpleaños","los opuestos","tu día",null];
 const COL=["#FFD6E0","#D6F0FF","#D9F7D6","#FFF0C2","#EADCFF","#FFE1CC"];
 const OWL=(s=70)=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" aria-hidden="true"><path d="M12 16 L22 23 L14 26 Z M52 16 L42 23 L50 26 Z" fill="#8B5E3C"/><ellipse cx="32" cy="38" rx="22" ry="24" fill="#8B5E3C"/><ellipse cx="32" cy="45" rx="13" ry="14" fill="#E9C9A0"/><circle cx="23" cy="29" r="9" fill="#fff"/><circle cx="41" cy="29" r="9" fill="#fff"/><circle cx="24" cy="30" r="4.2" fill="#222"/><circle cx="40" cy="30" r="4.2" fill="#222"/><circle cx="25.3" cy="28.6" r="1.3" fill="#fff"/><circle cx="41.3" cy="28.6" r="1.3" fill="#fff"/><path d="M29 36 L32 41 L35 36 Z" fill="#F2A33A"/><path d="M22 60 L26 56 L30 60 M34 60 L38 56 L42 60" stroke="#F2A33A" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`;
 const app=document.getElementById("app"),sec=id=>document.getElementById(id);
@@ -196,9 +205,13 @@ function pickV(){try{const all=speechSynthesis.getVoices();VEN=all.filter(v=>/^e
   const es=all.filter(v=>/^es/i.test(v.lang)).sort((a,b)=>vs(b,FES)-vs(a,FES));let sv=null;try{sv=localStorage.getItem("ek_voice")}catch(e){}
   vEN=VEN.find(v=>v.name===sv)||VEN[0]||null;vES=es[0]||null}catch(e){}}
 try{pickV();speechSynthesis.onvoiceschanged=pickV}catch(e){}
-function U(t,v,lang,r){const u=new SpeechSynthesisUtterance(t);u.lang=v?v.lang:lang;if(v)u.voice=v;u.rate=r;u.pitch=v&&(FEN.test(v.name)||FES.test(v.name))?1.05:1.25;return u}
-function say(t,slow,cb){try{speechSynthesis.cancel();const u=U(strip(t),vEN,"en-US",slow?0.5:rate);if(cb)u.onend=cb;speechSynthesis.speak(u)}catch(e){if(cb)cb()}}
-function sayEs(t,cb){try{speechSynthesis.cancel();const u=U(strip(t),vES,"es-PE",0.95);if(cb)u.onend=cb;speechSynthesis.speak(u)}catch(e){if(cb)cb()}}
+function U(t,v,lang,r){const u=new SpeechSynthesisUtterance(t);u.lang=v?v.lang:lang;if(v)u.voice=v;u.rate=r;u.pitch=1.8;return u}
+let MXT=null;
+function mxOn(t){clearTimeout(MXT);const m=sec("mx");if(!m)return;sec("mxt").textContent=t.length>110?t.slice(0,107)+"…":t;m.classList.add("on")}
+function mxOff(){clearTimeout(MXT);MXT=setTimeout(()=>{const m=sec("mx");if(m)m.classList.remove("on")},500)}
+function talk(u,t){u.addEventListener("start",()=>mxOn(t));u.addEventListener("end",mxOff);u.addEventListener("error",mxOff)}
+function say(t,slow,cb){try{speechSynthesis.cancel();const s=strip(t),u=U(s,vEN,"en-US",slow?0.5:rate);talk(u,s);if(cb)u.onend=cb;speechSynthesis.speak(u)}catch(e){if(cb)cb()}}
+function sayEs(t,cb){try{speechSynthesis.cancel();const s=strip(t),u=U(s,vES,"es-PE",1);talk(u,s);if(cb)u.onend=cb;speechSynthesis.speak(u)}catch(e){if(cb)cb()}}
 
 // ---------- sonidos y fiesta ----------
 let AC=null;
@@ -209,6 +222,10 @@ const PRAISE=[["Great job!","¡Buen trabajo!"],["Awesome!","¡Increíble!"],["We
 function toast(m){const d=document.createElement("div");d.className="modal";d.innerHTML=`<div class="card">${OWL(60)}<p style="font-size:1.1rem">${m}</p><button class="btn go" onclick="this.closest('.modal').remove()">¡OK!</button></div>`;document.body.append(d)}
 
 // ---------- inicio ----------
+const FEM=/^(rocio|raquel|isabel|carmen|luz|beatriz|ines|pilar|mercedes|dolores|ruth|ester|esther|abigail|noemi|belen|consuelo|rosario|soledad|maribel|flor|karen|lizbeth|nicole|ashley|jazmin|yasmin|astrid|ingrid|miriam|sharon|evelyn|allison|alison|madeleine|nayeli|mabel|marisol|gisel|giselle|joselyn|jocelyn|nahomi|naomi|zoe|chloe|abril|maite|yuliet|ivonne|lourdes|nancy|sandy|kelly|cindy|leydi|lady|milagros|guadalupe|elizabeth|rachel|jennifer|kimberly|katherine|catherine|nathaly|nataly|yamile|yaneth|janeth|anyeli|xiomy|denisse|mayte|ariel|eli)$/,MAS=/^(luca|joshua|nicola|bautista|mattia|akira|garcia|elisha|josua|jeremia|yeshua)$/;
+const sexo=()=>{if(!USER)return"M";if(USER.s==="F"||USER.s==="M")return USER.s;const n=String(USER.n||USER.u||"").trim().split(/\s+/)[0].toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");if(FEM.test(n))return"F";if(MAS.test(n))return"M";return/a$/.test(n)?"F":"M"};
+const am=()=>sexo()==="F"?"amiga":"amigo",bv=()=>sexo()==="F"?"Bienvenida":"Bienvenido",amN=()=>am()+(nom()?" "+nom():"");
+const hoyTxt=()=>cur===ND-1?"¡Hoy es el gran repaso final!":D[cur].rev?"Hoy repasaremos lo que aprendimos en los últimos días.":"Hoy hablaremos de "+HOY[cur]+".";
 const nom=()=>USER&&USER.n&&!/^\d+$/.test(USER.n)?USER.n.split(" ")[0]:"";
 const passed=i=>done[i]!==undefined&&done[i]>=70;
 const nextDay=()=>{for(let i=0;i<Math.min(ND,MAXD);i++)if(!passed(i))return i;return Math.min(ND,MAXD)-1};
@@ -235,18 +252,19 @@ const SX=[["📖","Aprende","#D6F0FF",()=>aprende()],["🎧","Escucha y toca","#
 const stKey=()=>"ek_st_"+(USER?USER.u:"");
 function stLoad(){try{ST=JSON.parse(LS.get(stKey())||"{}")}catch(e){ST={}}}
 function markSt(k){const a=ST[cur]=ST[cur]||[];if(!a.includes(k)){a.push(k);LS.set(stKey(),JSON.stringify(ST))}}
-function openDay(i){if(i+1>MAXD){toast("🔒 Este día todavía está cerrado.<br>Pídele a tu profe o a tus papás que lo abran.");return}cur=i;camino()}
+function openDay(i){if(i+1>MAXD){toast("🔒 Este día todavía está cerrado.<br>Pídele a tu profe o a tus papás que lo abran.");return}cur=i;camino();setTimeout(()=>sayEs(hoyTxt()+" ¡Mucha atención, "+amN()+"!"),300)}
 function camino(){view="day";try{speechSynthesis.cancel()}catch(e){}const d=D[cur],a=ST[cur]||[],nx=SX.findIndex((s,k)=>!a.includes(k));
   app.innerHTML=`<div class="top"><button class="btn sm" onclick="home()">← Inicio</button><span class="pill">Día ${cur+1}/${ND}</span></div>
   <div class="center"><div style="font-size:4rem;line-height:1.1">${d.e}</div><div class="big">${d.t}</div><div class="es" style="font-size:1.1rem">${d.es}</div></div>
-  <div class="max">${OWL(62)}<div class="bub">${d.tip} <button class="btn sm" onclick="sayEs(D[cur].tip)">🔊</button></div></div>
+  <div class="max">${OWL(62)}<div class="bub"><b>${hoyTxt()}</b><br>${d.tip} <button class="btn sm" onclick="sayEs(D[cur].tip)">🔊</button></div></div>
   <div class="bar"><i style="width:${a.length/SX.length*100}%"></i></div>
   ${SX.map((s,k)=>`<div class="station${a.includes(k)?" done":""}" onclick="SX[${k}][3]()"><span class="ic" style="background:${s[2]}">${s[0]}</span><span style="flex:1">${k+1}. ${s[1]}</span><span>${a.includes(k)?"✅":k===nx?"▶":""}</span></div>`).join("")}
   ${done[cur]!==undefined?`<p class="center">Tu mejor resultado: ${"⭐".repeat(stars(done[cur]))||"inténtalo otra vez"} ${done[cur]>=70?" · sticker "+d.e:""}</p>`:""}
   <div class="row" style="justify-content:space-between;margin-top:10px">${cur>0?`<button class="btn sm" onclick="openDay(${cur-1})">‹ Día ${cur}</button>`:"<span></span>"}${cur<ND-1?`<button class="btn sm" onclick="openDay(${cur+1})">Día ${cur+2} ›</button>`:""}</div>`;scrollTo(0,0)}
 const hdr=(t,k,n)=>`<div class="top"><button class="btn sm" onclick="camino()">← Camino</button><span class="pill">${t}</span></div>${n?`<div class="bar" style="margin:10px 0"><i style="width:${k/n*100}%"></i></div>`:""}`;
-function fin(k){markSt(k);confetti();fanfare();const p=rnd(PRAISE),nx=k+1<SX.length?k+1:-1;setTimeout(()=>say(p[0]),500);
-  app.innerHTML=hdr(SX[k][0]+" "+SX[k][1])+`<div class="card center"><div style="font-size:4rem">🎉</div><div class="max" style="justify-content:center">${OWL(70)}<div class="bub"><b>${p[0]}</b><br>${p[1]}</div></div>
+const FIN=["¡Genial! Lo has hecho muy bien.","¡Muy bien! Lo lograste.","¡Excelente trabajo!","¡Súper! Lo hiciste genial."];
+function fin(k){markSt(k);confetti();fanfare();const p=rnd(PRAISE),nx=k+1<SX.length?k+1:-1,ft=rnd(FIN)+(nx>=0?" Continúa con la siguiente actividad.":"");setTimeout(()=>sayEs(ft),500);
+  app.innerHTML=hdr(SX[k][0]+" "+SX[k][1])+`<div class="card center"><div style="font-size:4rem">🎉</div><div class="max" style="justify-content:center">${OWL(70)}<div class="bub"><b>${p[0]}</b><br>${ft}</div></div>
   <div class="row c" style="margin-top:10px">${nx>=0?`<button class="btn go" onclick="SX[${nx}][3]()">Siguiente: ${SX[nx][0]} ${SX[nx][1]} ▶</button>`:""}<button class="btn" onclick="camino()">Volver al camino</button></div></div>`}
 
 // ---------- 1. aprende ----------
@@ -335,18 +353,18 @@ function resT(ok,x){if(ok){q.ok++;dingOk();sec("msg").innerHTML=`🦉 <b>${rnd(P
 function ansT(b){const x=q.it[q.k].x;document.querySelectorAll(".opt").forEach(o=>{o.disabled=true;if(o.dataset.r==="1")o.classList.add("ok")});if(b.dataset.r!=="1")b.classList.add("bad");resT(b.dataset.r==="1",x)}
 function chkO(){const x=q.it[q.k].x;if(q.pool.length)return toast("Usa todas las palabras 😉");sec("chk").disabled=true;resT(nrm(q.built.join(" "))===nrm(x[0]),x)}
 function endT(){const n=q.it.length,pct=Math.round(q.ok/n*100),s=stars(pct),pass=pct>=70,d=D[cur];registrar(pct);
-  if(pass){markSt(5);confetti();fanfare()}const mf=motiv(pass);setTimeout(()=>sayEs(mf),1100);
+  if(pass){markSt(5);confetti();fanfare()}let mf=motiv(pass);if(pass&&cur===ND-1)mf=mf.replace("Continúa con la clase siguiente.","¡Terminaste todo el curso, eres un campeón!");setTimeout(()=>sayEs(mf),1100);
   app.innerHTML=hdr("🏆 Reto final")+`<div class="card center"><div style="font-size:2.6rem">${pass?"⭐".repeat(s):"💪"}</div><div class="big">${q.ok} de ${n}</div>
   ${pass?`<p style="font-size:1.2rem">¡Ganaste el sticker!</p><div style="font-size:5rem;line-height:1.1">${d.e}</div>`:`<p style="font-size:1.1rem">Necesitas ${Math.ceil(n*0.7)} para pasar. ¡Tú puedes!</p>`}
   <div class="max" style="justify-content:center">${OWL(60)}<div class="bub">${mf} <button class="btn sm" onclick="sayEs('${esc(mf)}')">🔁</button></div></div>
   <div class="row c" style="margin-top:8px"><button class="btn" onclick="reto()">↺ Jugar otra vez</button>${pass&&cur<ND-1?`<button class="btn go" onclick="openDay(${cur+1})">Día ${cur+2} ▶</button>`:`<button class="btn bl" onclick="camino()">Volver al camino</button>`}</div></div>`}
 
 // ---------- motivación y bienvenida ----------
-const MOT_OK=["¡Excelente! La disciplina te lleva al éxito.","¡Bien hecho! Sigue así, vas muy bien.","Un día más cerca de hablar inglés.","¡Eres un campeón! Mañana, otra aventura.","¡Felicitaciones! Tu esfuerzo está dando frutos.","¡Súper! Cada día aprendes más.","¡Lo estás logrando! No te detengas.","¡Qué orgullo! Practicar todos los días marca la diferencia."];
+const MOT_OK=["¡Genial! Lo has hecho muy bien. Continúa con la clase siguiente.","¡Excelente! Ganaste tu sticker. Continúa con la clase siguiente.","¡Muy bien! Cada día aprendes más. Continúa con la clase siguiente.","¡Súper! Lo lograste. Continúa con la clase siguiente.","¡Felicitaciones! Tu esfuerzo da frutos. Continúa con la clase siguiente."];
 const MOT_NO=["No te rindas, cada error te enseña algo.","Sigue adelante, lo vas a lograr.","¡Casi! Inténtalo otra vez, tú puedes.","Equivocarse es parte de aprender. ¡Vamos de nuevo!","Respira, repasa y vuelve a intentarlo."];
 function motiv(ok){const L=ok?MOT_OK:MOT_NO,t=rnd(L),n=nom();return n?t.replace(/^(¡?)([^,.!]+)([,.!])/,(m,a,b,c)=>a+b+", "+n+c):t}
-function welcome(){try{if(sessionStorage.getItem("ekw"))return;sessionStorage.setItem("ekw","1")}catch(e){}const t="Hello"+(nom()?", "+nom():"")+"! Welcome back, my friend!";
-  if(navigator.userActivation&&!navigator.userActivation.hasBeenActive)document.addEventListener("pointerdown",()=>setTimeout(()=>say(t),200),{once:true});else setTimeout(()=>say(t),500)}
+function welcome(){try{if(sessionStorage.getItem("ekw"))return;sessionStorage.setItem("ekw","1")}catch(e){}const t="¡Hola! "+bv()+" al curso de inglés, "+amN()+". ¡Vamos a aprender jugando!";
+  if(navigator.userActivation&&!navigator.userActivation.hasBeenActive)document.addEventListener("pointerdown",()=>setTimeout(()=>sayEs(t),200),{once:true});else setTimeout(()=>sayEs(t),500)}
 
 // ---------- sesión y guardado ----------
 const API="https://script.google.com/macros/s/AKfycbzobTyHZG2M-cc_siFCzf62FhugA-SWcXCGiuPumw08p3ICrDxOWWUnbs8FnZAsIo6O/exec";
@@ -375,7 +393,7 @@ const qKey=()=>"ek_q_"+(USER?USER.u:"");
 function qLoad(){try{SQ=JSON.parse(LS.get(qKey())||"[]")}catch(e){SQ=[]}}
 function qSave(){if(USER)LS.set(qKey(),JSON.stringify(SQ))}
 const merge=a=>{if(a)Object.keys(a).forEach(k=>{if(done[k]===undefined||a[k]>done[k])done[k]=a[k]});save()};
-function entrar(r,tk){USER={u:r.u,n:r.nombre};MAXD=GS?Math.max(1,Math.min(ND,Number(r.maxDia)||1)):ND;TOKEN=tk;let loc={};try{loc=JSON.parse(LS.get("ek_"+r.u)||"{}")}catch(e){}
+function entrar(r,tk){USER={u:r.u,n:r.nombre,s:r.sexo};MAXD=GS?Math.max(1,Math.min(ND,Number(r.maxDia)||1)):ND;TOKEN=tk;let loc={};try{loc=JSON.parse(LS.get("ek_"+r.u)||"{}")}catch(e){}
   done=loc;merge(r.avance);stLoad();qLoad();setTimeout(sync,1500);home();welcome()}
 function logout(){clearTimeout(SQT);SQ=[];if(GS&&TOKEN)srv("logout",TOKEN).catch(()=>{});LS.del("ek_tk");LS.del("ek_user");USER=null;TOKEN=null;done={};showLogin()}
 async function start(){const tk=LS.get("ek_tk");
