@@ -205,7 +205,7 @@ function pickV(){try{const all=speechSynthesis.getVoices();VEN=all.filter(v=>/^e
   VES=all.filter(v=>/^es/i.test(v.lang)).sort((a,b)=>vs(b,FES)-vs(a,FES));let sv=null,se=null;try{sv=localStorage.getItem("ek_voice");se=localStorage.getItem("ek_voice_es")}catch(e){}
   vEN=VEN.find(v=>v.name===sv)||VEN[0]||null;vES=VES.find(v=>v.name===se)||VES[0]||null}catch(e){}}
 try{pickV();speechSynthesis.onvoiceschanged=pickV}catch(e){}
-function U(t,v,lang,r){const u=new SpeechSynthesisUtterance(t);u.lang=v?v.lang:lang;if(v)u.voice=v;u.rate=r;u.pitch=1.9;return u}
+function U(t,v,lang,r){const u=new SpeechSynthesisUtterance(t);u.lang=v?v.lang:lang;if(v)u.voice=v;u.rate=r;u.pitch=1.4;return u}
 let MXT=null;
 function mxOn(t){clearTimeout(MXT);const m=sec("mx");if(!m)return;sec("mxt").textContent=t.length>110?t.slice(0,107)+"…":t;m.classList.add("on")}
 function mxOff(){clearTimeout(MXT);MXT=setTimeout(()=>{const m=sec("mx");if(m)m.classList.remove("on")},500)}
