@@ -230,7 +230,7 @@ const nom=()=>USER&&USER.n&&!/^\d+$/.test(USER.n)?USER.n.split(" ")[0]:"";
 const passed=i=>done[i]!==undefined&&done[i]>=70;
 const nextDay=()=>{for(let i=0;i<Math.min(ND,MAXD);i++)if(!passed(i))return i;return Math.min(ND,MAXD)-1};
 const totStars=()=>Object.values(done).reduce((a,p)=>a+stars(p),0);
-function home(){view="home";try{speechSynthesis.cancel()}catch(e){}const nx=nextDay();
+function home(){view="home";SQN++;try{speechSynthesis.cancel()}catch(e){}const nx=nextDay();
   app.innerHTML=`<div class="top"><span class="pill">⭐ ${totStars()}</span><span class="pill">🏅 ${D.filter((d,i)=>passed(i)).length}/${ND}</span><button class="btn sm" onclick="ajustes()" aria-label="Ajustes">⚙️</button></div>
   <div class="max">${OWL(80)}<div class="bub">Hello, <b>${nom()||"friend"}</b>! 👋<br>¡Vamos a aprender inglés jugando!</div></div>
   <button class="btn go" style="width:100%;font-size:1.45rem;padding:16px" onclick="openDay(${nx})">▶ ¡A jugar! · Día ${nx+1} ${D[nx].e}</button>
@@ -254,7 +254,7 @@ const stKey=()=>"ek_st_"+(USER?USER.u:"");
 function stLoad(){try{ST=JSON.parse(LS.get(stKey())||"{}")}catch(e){ST={}}}
 function markSt(k){const a=ST[cur]=ST[cur]||[];if(!a.includes(k)){a.push(k);LS.set(stKey(),JSON.stringify(ST))}}
 function openDay(i){if(i+1>MAXD){toast("🔒 Este día todavía está cerrado.<br>Pídele a tu profe o a tus papás que lo abran.");return}cur=i;camino();setTimeout(()=>sayEs(hoyTxt()+" ¡Mucha atención, "+amN()+"!"),300)}
-function camino(){view="day";try{speechSynthesis.cancel()}catch(e){}const d=D[cur],a=ST[cur]||[],nx=SX.findIndex((s,k)=>!a.includes(k));
+function camino(){view="day";SQN++;try{speechSynthesis.cancel()}catch(e){}const d=D[cur],a=ST[cur]||[],nx=SX.findIndex((s,k)=>!a.includes(k));
   app.innerHTML=`<div class="top"><button class="btn sm" onclick="home()">← Inicio</button><span class="pill">Día ${cur+1}/${ND}</span></div>
   <div class="center"><div style="font-size:4rem;line-height:1.1">${d.e}</div><div class="big">${d.t}</div><div class="es" style="font-size:1.1rem">${d.es}</div></div>
   <div class="max">${OWL(62)}<div class="bub"><b>${hoyTxt()}</b><br>${d.tip} <button class="btn sm" onclick="sayEs(D[cur].tip)">🔊</button></div></div>
@@ -263,6 +263,10 @@ function camino(){view="day";try{speechSynthesis.cancel()}catch(e){}const d=D[cu
   ${done[cur]!==undefined?`<p class="center">Tu mejor resultado: ${"⭐".repeat(stars(done[cur]))||"inténtalo otra vez"} ${done[cur]>=70?" · sticker "+d.e:""}</p>`:""}
   <div class="row" style="justify-content:space-between;margin-top:10px">${cur>0?`<button class="btn sm" onclick="openDay(${cur-1})">‹ Día ${cur}</button>`:"<span></span>"}${cur<ND-1?`<button class="btn sm" onclick="openDay(${cur+1})">Día ${cur+2} ›</button>`:""}</div>`;scrollTo(0,0)}
 const hdr=(t,k,n)=>`<div class="top"><button class="btn sm" onclick="camino()">← Camino</button><span class="pill">${t}</span></div>${n?`<div class="bar" style="margin:10px 0"><i style="width:${k/n*100}%"></i></div>`:""}`;
+const BIEN=()=>["¡Muy bien! Sigue así.","¡Excelente, "+am()+"! Lo hiciste muy bien.","¡Genial! Vas muy bien.","¡Súper! Sigue así.","¡Eso es! Eres "+(sexo()==="F"?"una campeona":"un campeón")+"."],MAL=()=>["¡Oh, no te desanimes! Inténtalo otra vez.","¡Casi! Tú puedes.","No pasa nada, "+am()+". Vuelve a intentarlo.","¡Ánimo! La próxima te sale."];
+const bien=()=>rnd(BIEN()),mal=()=>rnd(MAL());
+let SQN=0;
+function seq(parts,next,max){const id=++SQN;let k=0,ok=false;const go=()=>{if(ok||id!==SQN)return;ok=true;if(next)next()};setTimeout(go,max||9000);const run=()=>{if(id!==SQN)return;if(k>=parts.length){setTimeout(go,300);return}const p=parts[k++];(p[1]?sayEs:say)(p[0],run)};run()}
 const FIN=["¡Genial! Lo has hecho muy bien.","¡Muy bien! Lo lograste.","¡Excelente trabajo!","¡Súper! Lo hiciste genial."];
 function fin(k){markSt(k);confetti();fanfare();const p=rnd(PRAISE),nx=k+1<SX.length?k+1:-1,ft=rnd(FIN)+(nx>=0?" Continúa con la siguiente actividad.":"");setTimeout(()=>sayEs(ft),500);
   app.innerHTML=hdr(SX[k][0]+" "+SX[k][1])+`<div class="card center"><div style="font-size:4rem">🎉</div><div class="max" style="justify-content:center">${OWL(70)}<div class="bub"><b>${p[0]}</b><br>${ft}</div></div>
@@ -283,15 +287,15 @@ function drawE(){if(q.k>=q.it.length)return fin(1);const x=q.it[q.k],op=shuf([x,
   app.innerHTML=hdr("🎧 Escucha y toca",q.k,q.it.length)+`<p class="center">Escucha y toca el dibujo correcto 👆</p><div class="center"><button class="btn or" style="font-size:1.4rem;padding:14px 26px" onclick="say(q.it[q.k][0])">🔊 ¡Escuchar!</button> <button class="btn" onclick="say(q.it[q.k][0],1)">🐢</button></div>
   <div class="opts" style="margin-top:14px">${op.map(o=>`<button class="opt" data-r="${o===x?1:0}" onclick="tapE(this)">${o[2]}</button>`).join("")}</div><div class="center msg" id="msg"></div>`;setTimeout(()=>say(x[0]),300)}
 function tapE(b){const x=q.it[q.k];
-  if(b.dataset.r==="1"){document.querySelectorAll(".opt").forEach(o=>o.disabled=true);b.classList.add("ok");if(!q.miss)q.ok++;dingOk();const p=rnd(PRAISE);sec("msg").innerHTML=`🦉 <b>${p[0]}</b> <b>${x[0]}</b> = ${x[1]}`;say(p[0]+" "+x[0]+"!");q.k++;setTimeout(drawE,1700)}
-  else{b.classList.add("bad");b.disabled=true;q.miss=1;dingBad();sec("msg").innerHTML="🦉 ¡Casi! Escucha otra vez 👂";setTimeout(()=>say(x[0]),400)}}
+  if(b.dataset.r==="1"){document.querySelectorAll(".opt").forEach(o=>o.disabled=true);b.classList.add("ok");if(!q.miss)q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b> <b>${x[0]}</b> = ${x[1]}`;q.k++;seq([[p,1],[x[0]]],drawE)}
+  else{b.classList.add("bad");b.disabled=true;q.miss=1;dingBad();const m=mal();sec("msg").innerHTML="🦉 "+m+" 👂";seq([[m,1],[x[0]]])}}
 
 // ---------- 3. memoria ----------
 function memoria(){view="act";const w=shuf(W()).slice(0,4);q={cards:shuf(w.flatMap((x,i)=>[{i,t:x[2],e:1,x},{i,t:x[0],e:0,x}])),open:[],n:0,lock:0};drawM()}
 function drawM(){app.innerHTML=hdr("🃏 Memoria",q.n,4)+`<p class="center">Voltea dos cartas y junta el <b>dibujo</b> con su <b>palabra</b> 🧠</p><div class="mem">${q.cards.map((c,k)=>{const op=c.ok||q.open.includes(k);return `<div class="mc${op?" open":""}${c.ok?" done":""}${c.e?"":" t"}" onclick="flipM(${k})">${op?c.t:"?"}</div>`}).join("")}</div>`}
 function flipM(k){const c=q.cards[k];if(q.lock||c.ok||q.open.includes(k))return;q.open.push(k);if(!c.e)say(c.x[0]);drawM();
   if(q.open.length===2){const [a,b]=q.open.map(j=>q.cards[j]);
-    if(a.i===b.i){a.ok=b.ok=1;q.open=[];q.n++;dingOk();say(a.x[0]);drawM();if(q.n===4)setTimeout(()=>fin(2),1000)}
+    if(a.i===b.i){a.ok=b.ok=1;q.open=[];q.n++;dingOk();drawM();seq([[bien(),1],[a.x[0]]],q.n===4?()=>fin(2):null)}
     else{q.lock=1;setTimeout(()=>{dingBad();q.open=[];q.lock=0;drawM()},1100)}}}
 
 // ---------- 4. repite conmigo ----------
@@ -314,8 +318,8 @@ function listen(){if(REC){try{REC.stop()}catch(e){}return}try{speechSynthesis.ca
   try{r.start()}catch(e){REC=null}}
 function judge(alts){const x=q.it[q.k],t=nrm(x[0]),tw=t.split(" ");
   const ok=alts.some(a=>{const h=nrm(a),hw=h.split(" ");return h.includes(t)||sim(h,t)>=0.6||tw.filter(w=>hw.some(z=>sim(z,w)>=0.7)).length>=Math.ceil(tw.length*0.7)});
-  if(ok)okR();else{q.tries++;dingBad();sec("msg").innerHTML=`Escuché: «${alts[0]}»<br>${q.tries>=2?`¡Buen intento! 💪 <button class="btn sm go" onclick="q.k++;drawR()">Siguiente ▶</button>`:"¡Casi! Escucha otra vez y repite 👂"}`;setTimeout(()=>say(x[0]),300)}}
-function okR(){if(!q.tries)q.ok++;dingOk();const p=rnd(PRAISE);sec("msg").innerHTML=`🦉 <b>${p[0]}</b> ${p[1]}`;say(p[0]);q.k++;setTimeout(drawR,1600)}
+  if(ok)okR();else{q.tries++;dingBad();const M=mal();sec("msg").innerHTML=`Escuché: «${alts[0]}»<br>${q.tries>=2?`¡Buen intento! 💪 <button class="btn sm go" onclick="q.k++;drawR()">Siguiente ▶</button>`:"🦉 "+M+" 👂"}`;seq([[M,1],[x[0]]])}}
+function okR(){if(!q.tries)q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b>`;q.k++;seq([[p,1]],drawR)}
 
 // ---------- 5. mini diálogo ----------
 let DT=0;
@@ -350,7 +354,7 @@ function drawT(){if(q.k>=q.it.length)return endT();const o=q.it[q.k],x=o.x,h=hdr
     <div class="row c" style="margin-top:12px"><button class="btn" onclick="q.pool=q.pool.concat(q.built);q.built=[];drawO()">↺ Otra vez</button><button class="btn go" id="chk" onclick="chkO()">Comprobar ✓</button></div><div class="center msg" id="msg"></div>`;drawO()}}
 function drawO(){sec("built").innerHTML=q.built.map((w,i)=>`<span class="chip" onclick="q.pool.push(q.built.splice(${i},1)[0]);drawO()">${w}</span>`).join("")||'<span class="es">Toca las palabras en orden 👇</span>';
   sec("pool").innerHTML=q.pool.map((w,i)=>`<span class="chip" onclick="q.built.push(q.pool.splice(${i},1)[0]);say('${esc(w)}');drawO()">${w}</span>`).join("")}
-function resT(ok,x){if(ok){q.ok++;dingOk();sec("msg").innerHTML=`🦉 <b>${rnd(PRAISE)[0]}</b>`}else{dingBad();sec("msg").innerHTML=`🦉 Era: <b>${x[0]}</b> ${x[2]} · ¡La próxima sale! 💪`}say(x[0]);q.k++;setTimeout(drawT,1900)}
+function resT(ok,x){let pr;if(ok){q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b> <b>${x[0]}</b> = ${x[1]}`;pr=[[p,1],[x[0]]]}else{dingBad();sec("msg").innerHTML=`🦉 ¡Oh, no te desanimes! Era: <b>${x[0]}</b> ${x[2]} = ${x[1]} 💪`;pr=[["¡Oh, no te desanimes! La respuesta era:",1],[x[0]]]}q.k++;seq(pr,drawT)}
 function ansT(b){const x=q.it[q.k].x;document.querySelectorAll(".opt").forEach(o=>{o.disabled=true;if(o.dataset.r==="1")o.classList.add("ok")});if(b.dataset.r!=="1")b.classList.add("bad");resT(b.dataset.r==="1",x)}
 function chkO(){const x=q.it[q.k].x;if(q.pool.length)return toast("Usa todas las palabras 😉");sec("chk").disabled=true;resT(nrm(q.built.join(" "))===nrm(x[0]),x)}
 function endT(){const n=q.it.length,pct=Math.round(q.ok/n*100),s=stars(pct),pass=pct>=70,d=D[cur];registrar(pct);
@@ -364,8 +368,8 @@ function endT(){const n=q.it.length,pct=Math.round(q.ok/n*100),s=stars(pct),pass
 const MOT_OK=["¡Genial! Lo has hecho muy bien. Continúa con la clase siguiente.","¡Excelente! Ganaste tu sticker. Continúa con la clase siguiente.","¡Muy bien! Cada día aprendes más. Continúa con la clase siguiente.","¡Súper! Lo lograste. Continúa con la clase siguiente.","¡Felicitaciones! Tu esfuerzo da frutos. Continúa con la clase siguiente."];
 const MOT_NO=["No te rindas, cada error te enseña algo.","Sigue adelante, lo vas a lograr.","¡Casi! Inténtalo otra vez, tú puedes.","Equivocarse es parte de aprender. ¡Vamos de nuevo!","Respira, repasa y vuelve a intentarlo."];
 function motiv(ok){const L=ok?MOT_OK:MOT_NO,t=rnd(L),n=nom();return n?t.replace(/^(¡?)([^,.!]+)([,.!])/,(m,a,b,c)=>a+b+", "+n+c):t}
-function welcome(){try{if(sessionStorage.getItem("ekw"))return;sessionStorage.setItem("ekw","1")}catch(e){}const t="¡Hola! Soy Max y seré tu amigo en esta aventura para que puedas aprender inglés. "+bv()+" al curso de inglés, "+amN()+".";
-  if(navigator.userActivation&&!navigator.userActivation.hasBeenActive)document.addEventListener("pointerdown",()=>setTimeout(()=>sayEs(t),200),{once:true});else setTimeout(()=>sayEs(t),500)}
+function welcome(){try{if(sessionStorage.getItem("ekw"))return;sessionStorage.setItem("ekw","1")}catch(e){}const t="¡Hola"+(nom()?", "+nom():"")+"! Soy Max y seré tu amigo en esta aventura para que aprendas inglés. "+bv()+" al curso, "+am()+".";
+  if(navigator.userActivation&&!navigator.userActivation.hasBeenActive){const d=document.createElement("div");d.className="modal";d.innerHTML=`<div class="card">${OWL(90)}<div class="big">¡Hola${nom()?", "+nom():""}! 👋</div><button class="btn go" style="font-size:1.3rem;margin-top:10px">¡Empezar! ▶</button></div>`;d.querySelector("button").onclick=()=>{d.remove();sayEs(t)};document.body.append(d)}else setTimeout(()=>sayEs(t),500)}
 
 // ---------- sesión y guardado ----------
 const API="https://script.google.com/macros/s/AKfycbzobTyHZG2M-cc_siFCzf62FhugA-SWcXCGiuPumw08p3ICrDxOWWUnbs8FnZAsIo6O/exec";
