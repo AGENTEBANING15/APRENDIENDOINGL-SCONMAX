@@ -14,7 +14,7 @@ header{height:8px;background:linear-gradient(90deg,#FF7BAC 0 20%,#FFC83D 20% 40%
 .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row.c,.c{justify-content:center}
 .pill{background:#fff;border-radius:999px;padding:4px 14px;font-weight:700;box-shadow:0 3px 0 #0001}
-.max{display:flex;align-items:center;gap:10px;margin:12px 0}
+.max{display:flex;align-items:center;gap:10px;margin:12px 0}.max>svg{flex:none}
 .bub{background:#fff;border-radius:18px;padding:10px 14px;font-size:1.05rem;line-height:1.4;box-shadow:0 3px 0 #0001}
 .big{font-size:1.9rem;font-weight:800;margin:4px 0;line-height:1.1}
 .btn{border:none;border-radius:18px;padding:12px 18px;font:inherit;font-weight:700;cursor:pointer;background:#fff;color:var(--ink);box-shadow:0 4px 0 #0002;font-size:1.05rem}
@@ -35,6 +35,7 @@ header{height:8px;background:linear-gradient(90deg,#FF7BAC 0 20%,#FFC83D 20% 40%
 .msg{min-height:44px;margin-top:10px;font-size:1.1rem}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .opt{background:#fff;border:4px solid transparent;border-radius:22px;font-size:3.8rem;padding:10px;cursor:pointer;box-shadow:0 4px 0 #0002;font-family:inherit;line-height:1.2}
+.ex{background:#FFFDF5;border:3px dashed #eadfb8;border-radius:16px;padding:10px;margin:12px 0}.mo{display:inline-block;background:#fff;border:3px solid #eee;border-radius:16px;padding:6px 12px;font-size:2.2rem;text-align:center;line-height:1.2}.mo.ok{border-color:var(--ok);background:#E8F8EC}.mo small{display:block;font-size:.85rem;font-weight:700;color:var(--mut)}
 .opt small{display:block;font-size:1.05rem;font-weight:700;color:var(--mut);line-height:1.2}.opt.txt{font-size:1.5rem;font-weight:700;padding:14px 8px}
 .opt.ok{border-color:var(--ok);background:#E8F8EC}.opt.bad{border-color:var(--bad);background:#FDECEC}
 .mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
@@ -195,23 +196,23 @@ const W=()=>D[cur].w,F=()=>D[cur].f,C=()=>D[cur].c;
 const stars=p=>p>=100?3:p>=85?2:p>=70?1:0;
 
 // ---------- voces (mujer) ----------
-let rate=(()=>{try{return Math.min(1,Math.max(0.5,+localStorage.getItem("ek_rate2")||0.7))}catch(e){return 0.7}})();
-let vEN=null,vES=null,VEN=[],VES=[];
+let rate=(()=>{try{return Math.min(1,Math.max(0.5,+localStorage.getItem("ek_rate3")||0.65))}catch(e){return 0.65}})();
+let vEN=null,vES=null,vLEO=null,VEN=[],VES=[];
 const FEN=/samantha|zira|aria|jenny|ava|emma|michelle|susan|karen|moira|tessa|serena|allison|joanna|salli|kimberly|ivy|google us english|female/i;
 const FES=/paulina|m[oó]nica|helena|elvira|dalia|camila|sabina|laura|paloma|elena|marisol|valentina|ximena|catalina|salom|luc[ií]a|google espa/i;
 const MALE=/david|mark|guy|daniel|james|alex|fred|jorge|pablo|diego|ra[uú]l|carlos|enrique|juan|andr[eé]s|gonzalo|tom[aá]s|jos[eé]|\bmale/i;
 function vs(v,Fm){let s=0;if(Fm.test(v.name))s+=50;if(MALE.test(v.name))s-=60;if(/natural|online|neural/i.test(v.name))s-=40;if(/google/i.test(v.name))s+=15;if(/en[-_]us|es[-_](us|mx|419|pe)/i.test(v.lang))s+=5;return s}
 function pickV(){try{const all=speechSynthesis.getVoices();VEN=all.filter(v=>/^en/i.test(v.lang)).sort((a,b)=>vs(b,FEN)-vs(a,FEN));
   VES=all.filter(v=>/^es/i.test(v.lang)).sort((a,b)=>vs(b,FES)-vs(a,FES));let sv=null,se=null;try{sv=localStorage.getItem("ek_voice");se=localStorage.getItem("ek_voice_es")}catch(e){}
-  vEN=VEN.find(v=>v.name===sv)||VEN[0]||null;vES=VES.find(v=>v.name===se)||VES[0]||null}catch(e){}}
+  vEN=VEN.find(v=>v.name===sv)||VEN[0]||null;vES=VES.find(v=>v.name===se)||VES[0]||null;vLEO=VEN.find(v=>vEN&&v.name!==vEN.name&&!MALE.test(v.name))||VEN.find(v=>vEN&&v.name!==vEN.name)||vEN}catch(e){}}
 try{pickV();speechSynthesis.onvoiceschanged=pickV}catch(e){}
-function U(t,v,lang,r){const u=new SpeechSynthesisUtterance(t);u.lang=v?v.lang:lang;if(v)u.voice=v;u.rate=r;u.pitch=1.4;return u}
+function U(t,v,lang,r,p){const u=new SpeechSynthesisUtterance(t);u.lang=v?v.lang:lang;if(v)u.voice=v;u.rate=r;u.pitch=p||1.4;return u}
 let MXT=null;
 function mxOn(t){clearTimeout(MXT);const m=sec("mx");if(!m)return;sec("mxt").textContent=t.length>110?t.slice(0,107)+"…":t;m.classList.add("on")}
 function mxOff(){clearTimeout(MXT);MXT=setTimeout(()=>{const m=sec("mx");if(m)m.classList.remove("on")},500)}
 function talk(u,t){u.addEventListener("start",()=>mxOn(t));u.addEventListener("end",mxOff);u.addEventListener("error",mxOff)}
-function say(t,slow,cb){try{speechSynthesis.cancel();const s=strip(t),u=U(s,vEN,"en-US",slow?0.5:rate);talk(u,s);if(cb)u.onend=cb;speechSynthesis.speak(u)}catch(e){if(cb)cb()}}
-function sayEs(t,cb){try{speechSynthesis.cancel();const s=strip(t),u=U(s,vES,"es-PE",0.85);talk(u,s);if(cb)u.onend=cb;speechSynthesis.speak(u)}catch(e){if(cb)cb()}}
+function say(t,slow,cb,who){try{speechSynthesis.cancel();const L=who==="leo",s=strip(t),u=U(s,L?vLEO:vEN,"en-US",slow?0.45:rate,L?1.9:1.4);talk(u,s);if(cb)u.onend=cb;speechSynthesis.speak(u)}catch(e){if(cb)cb()}}
+function sayEs(t,cb){try{speechSynthesis.cancel();const s=strip(t),u=U(s,vES,"es-PE",0.75);talk(u,s);if(cb)u.onend=cb;speechSynthesis.speak(u)}catch(e){if(cb)cb()}}
 
 // ---------- sonidos y fiesta ----------
 let AC=null;
@@ -245,11 +246,11 @@ function ajustes(){const d=document.createElement("div");d.className="modal";
   d.innerHTML=`<div class="card" style="text-align:left"><h3 style="margin:0 0 6px">⚙️ Ajustes <small class="es">(para papás)</small></h3>
   <label class="es">Voz en inglés</label><select onchange="vEN=VEN[+this.value]||null;try{localStorage.setItem('ek_voice',vEN?vEN.name:'')}catch(e){}say('Hello! I am Max.')">${VEN.map((v,i)=>`<option value="${i}"${v===vEN?" selected":""}>${v.name}${i===0?" · recomendada":""}</option>`).join("")||"<option>Voz del sistema</option>"}</select>
   <label class="es" style="display:block;margin-top:10px">Voz en español</label><select onchange="vES=VES[+this.value]||null;try{localStorage.setItem('ek_voice_es',vES?vES.name:'')}catch(e){}sayEs('¡Hola! Soy Max.')">${VES.map((v,i)=>`<option value="${i}"${v===vES?" selected":""}>${v.name}${i===0?" · recomendada":""}</option>`).join("")||"<option>Voz del sistema</option>"}</select>
-  <label class="es" style="display:block;margin-top:10px">Velocidad: <b id="rv">${rate.toFixed(2)}</b></label><input type="range" min="0.5" max="1" step="0.05" value="${rate}" style="width:100%" oninput="rate=+this.value;sec('rv').textContent=rate.toFixed(2);try{localStorage.setItem('ek_rate2',rate)}catch(e){}">
+  <label class="es" style="display:block;margin-top:10px">Velocidad: <b id="rv">${rate.toFixed(2)}</b></label><input type="range" min="0.5" max="1" step="0.05" value="${rate}" style="width:100%" oninput="rate=+this.value;sec('rv').textContent=rate.toFixed(2);try{localStorage.setItem('ek_rate3',rate)}catch(e){}">
   <div class="row c" style="margin-top:12px"><button class="btn bl" onclick="say('Hello! Let us learn English.')">🔊 Probar</button><button class="btn go" onclick="this.closest('.modal').remove()">Listo</button></div></div>`;document.body.append(d)}
 
 // ---------- camino del día ----------
-const SX=[["📖","Aprende","#D6F0FF",()=>aprende()],["🎧","Escucha y toca","#FFE1CC",()=>escucha()],["🃏","Memoria","#EADCFF",()=>memoria()],["🎤","Repite conmigo","#FFD6E0",()=>repite()],["💬","Mini diálogo","#D9F7D6",()=>dialogo()],["🏆","Reto final","#FFF0C2",()=>reto()]];
+const SX=[["📖","Aprende","#D6F0FF",()=>intro(0)],["🎧","Escucha y toca","#FFE1CC",()=>intro(1)],["🃏","Memoria","#EADCFF",()=>intro(2)],["🎤","Repite conmigo","#FFD6E0",()=>intro(3)],["💬","Mini diálogo","#D9F7D6",()=>intro(4)],["🏆","Reto final","#FFF0C2",()=>intro(5)]];
 const stKey=()=>"ek_st_"+(USER?USER.u:"");
 function stLoad(){try{ST=JSON.parse(LS.get(stKey())||"{}")}catch(e){ST={}}}
 function markSt(k){const a=ST[cur]=ST[cur]||[];if(!a.includes(k)){a.push(k);LS.set(stKey(),JSON.stringify(ST))}}
@@ -266,12 +267,34 @@ const hdr=(t,k,n)=>`<div class="top"><button class="btn sm" onclick="camino()">�
 const BIEN=()=>["¡Muy bien! Sigue así.","¡Excelente, "+am()+"! Lo hiciste muy bien.","¡Genial! Vas muy bien.","¡Súper! Sigue así.","¡Eso es! Eres "+(sexo()==="F"?"una campeona":"un campeón")+"."],MAL=()=>["¡Oh, no te desanimes! Inténtalo otra vez.","¡Casi! Tú puedes.","No pasa nada, "+am()+". Vuelve a intentarlo.","¡Ánimo! La próxima te sale."];
 const bien=()=>rnd(BIEN()),mal=()=>rnd(MAL());
 let SQN=0;
-const dur=(t,es)=>es?400+t.length*70:500+t.length*95;
-function seq(parts,next){const id=++SQN;let k=0;const run=()=>{if(id!==SQN)return;if(k>=parts.length){if(next)next();return}const p=parts[k++],me=k;let ok=false;const go=()=>{if(ok||id!==SQN||k!==me)return;ok=true;run()};(p[1]?sayEs:say)(p[0],go);setTimeout(go,dur(p[0],p[1]))};run()}
+const dur=(t,es,sl)=>(es?450+t.length*85:500+t.length*110)*(sl?1.5:1);
+function seq(parts,next){const id=++SQN;let k=0;const run=()=>{if(id!==SQN)return;if(k>=parts.length){if(next)next();return}const p=parts[k++],me=k;let ok=false;const go=()=>{if(ok||id!==SQN||k!==me)return;ok=true;run()};if(p[4])p[4]();if(p[1])sayEs(p[0],go);else say(p[0],p[3],go,p[2]);setTimeout(go,dur(p[0],p[1],p[3]))};run()}
 const FIN=["¡Genial! Lo has hecho muy bien.","¡Muy bien! Lo lograste.","¡Excelente trabajo!","¡Súper! Lo hiciste genial."];
 function fin(k){markSt(k);confetti();fanfare();const p=rnd(PRAISE),nx=k+1<SX.length?k+1:-1,ft=rnd(FIN)+(nx>=0?" Continúa con la siguiente actividad.":"");setTimeout(()=>sayEs(ft),500);
   app.innerHTML=hdr(SX[k][0]+" "+SX[k][1])+`<div class="card center"><div style="font-size:4rem">🎉</div><div class="max" style="justify-content:center">${OWL(70)}<div class="bub"><b>${p[0]}</b><br>${ft}</div></div>
   <div class="row c" style="margin-top:10px">${nx>=0?`<button class="btn go" onclick="SX[${nx}][3]()">Siguiente: ${SX[nx][0]} ${SX[nx][1]} ▶</button>`:""}<button class="btn" onclick="camino()">Volver al camino</button></div></div>`}
+
+// ---------- instrucciones ----------
+const START=[()=>aprende(),()=>escucha(),()=>memoria(),()=>repite(),()=>dialogo(),()=>reto()];
+const mini=(e,t,ok)=>`<span class="mo${ok?" ok":""}">${e}${t?`<small>${t}</small>`:""}</span>`;
+function guia(k){const w=W(),x=w[0],y=w[1],f=F()[0],c=C();
+  return [["Vamos a aprender palabras nuevas. Mira el dibujo, escucha la palabra en inglés y repítela en voz alta dos veces. Si va muy rápido, toca la tortuga.",
+    `<div class="huge" style="font-size:3.2rem">${x[2]}</div><div class="word" style="font-size:1.8rem">${x[0]}</div>${x[3]?`<div class="pr">[ ${x[3]} ]</div>`:""}<div class="es">${x[1]}</div><div class="row c" style="margin-top:6px"><span class="chip">🔊 Escuchar</span><span class="chip">🐢 Lento</span></div>`],
+   ["Toca el botón naranja para escuchar una palabra en inglés. Después toca el dibujo correcto. Por ejemplo, si escuchas la palabra de "+x[1]+", tocas su dibujo.",
+    `<div class="row c"><span class="chip" style="background:#FF8A3D;color:#fff">🔊 «${x[0]}»</span></div><div class="row c" style="margin-top:8px">${mini(y[2],y[1])}${mini(x[2],x[1],1)}</div>`],
+   ["Voltea dos cartas. Si el dibujo y la palabra en inglés son pareja, se quedan abiertas. ¡Encuentra las cuatro parejas!",
+    `<div class="row c">${mini(x[2])}<b style="font-size:1.6rem">+</b>${mini(`<span style="font-size:1.2rem;color:#2F7FD8">${x[0]}</span>`)}<b style="font-size:1.6rem">= ✅</b></div>`],
+   ["Escucha la palabra. Luego toca el micrófono rojo y dila en inglés. Yo te escucho y te ayudo si te equivocas.",
+    `<div class="row c"><span style="font-size:3rem">${x[2]}</span><span class="word" style="font-size:1.6rem">${x[0]}</span></div><div class="row c"><span class="mic" style="width:70px;height:70px;font-size:1.8rem;display:inline-flex;align-items:center;justify-content:center">🎤</span><b>→ ✅</b></div>`],
+   ["Primero escucha la conversación entre Max y Leo. Después tú serás Leo: cuando sea tu turno, toca el micrófono y di la frase en inglés.",
+    `<div class="line"><div class="who">🦉</div><div class="bub"><b>${c[0][1]}</b><div class="es">${c[0][2]}</div></div></div><div class="line me"><div class="who">🧒</div><div class="bub"><b>${c[1][1]}</b> 🎤</div></div>`],
+   ["¡Es el reto final! Tienes ocho preguntas: escucha y toca el dibujo, elige la palabra correcta y arma frases. Con seis buenas ganas tu sticker.",
+    `<div class="row c">${shuf(f[0].replace(/[.,!?]/g,"").split(" ")).map(z=>`<span class="chip">${z}</span>`).join("")}</div><div class="center" style="margin:6px 0">⬇️</div><div class="center word" style="font-size:1.4rem">${f[0]}</div>`]][k]}
+function intro(k){view="act";SQN++;const g=guia(k);
+  app.innerHTML=hdr(SX[k][0]+" "+SX[k][1])+`<div class="card"><div class="max" style="margin-top:0">${OWL(64)}<div class="bub">${g[0]} <button class="btn sm" onclick="sayEs(guia(${k})[0])">🔊</button></div></div>
+  <div class="ex"><div class="es" style="font-weight:700;margin-bottom:6px">👀 Ejemplo:</div>${g[1]}</div>
+  <button class="btn go" style="width:100%;font-size:1.35rem;padding:14px" onclick="SQN++;START[${k}]()">¡Empezar! ▶</button></div>`;
+  scrollTo(0,0);setTimeout(()=>sayEs(g[0]),300)}
 
 // ---------- 1. aprende ----------
 function aprende(){view="act";q={it:[...W(),...F().map(x=>[x[0],x[1],x[2],""])],k:0};drawA()}
@@ -288,7 +311,7 @@ function drawE(){if(q.k>=q.it.length)return fin(1);const x=q.it[q.k],op=shuf([x,
   app.innerHTML=hdr("🎧 Escucha y toca",q.k,q.it.length)+`<p class="center">Escucha y toca el dibujo correcto 👆</p><div class="center"><button class="btn or" style="font-size:1.4rem;padding:14px 26px" onclick="say(q.it[q.k][0])">🔊 ¡Escuchar!</button> <button class="btn" onclick="say(q.it[q.k][0],1)">🐢</button></div>
   <div class="opts" style="margin-top:14px">${op.map(o=>`<button class="opt" data-r="${o===x?1:0}" onclick="tapE(this)">${o[2]}<small>${o[1]}</small></button>`).join("")}</div><div class="center msg" id="msg"></div>`;setTimeout(()=>say(x[0]),300)}
 function tapE(b){const x=q.it[q.k];
-  if(b.dataset.r==="1"){document.querySelectorAll(".opt").forEach(o=>o.disabled=true);b.classList.add("ok");if(!q.miss)q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b> <b>${x[0]}</b> = ${x[1]}`;q.k++;seq([[p,1]],drawE)}
+  if(b.dataset.r==="1"){document.querySelectorAll(".opt").forEach(o=>o.disabled=true);b.classList.add("ok");if(!q.miss)q.ok++;dingOk();sec("msg").innerHTML=`✅ <b>${x[0]}</b> = ${x[1]}`;q.k++;seq([[x[0]]],drawE)}
   else{b.classList.add("bad");b.disabled=true;q.miss=1;dingBad();const m=mal();sec("msg").innerHTML="🦉 "+m+" 👂";seq([[m,1],[x[0]]])}}
 
 // ---------- 3. memoria ----------
@@ -296,7 +319,7 @@ function memoria(){view="act";const w=shuf(W()).slice(0,4);q={cards:shuf(w.flatM
 function drawM(){app.innerHTML=hdr("🃏 Memoria",q.n,4)+`<p class="center">Voltea dos cartas y junta el <b>dibujo</b> con su <b>palabra</b> 🧠</p><div class="mem">${q.cards.map((c,k)=>{const op=c.ok||q.open.includes(k);return `<div class="mc${op?" open":""}${c.ok?" done":""}${c.e?"":" t"}" onclick="flipM(${k})">${op?c.t:"?"}</div>`}).join("")}</div>`}
 function flipM(k){const c=q.cards[k];if(q.lock||c.ok||q.open.includes(k))return;q.open.push(k);if(!c.e)say(c.x[0]);drawM();
   if(q.open.length===2){const [a,b]=q.open.map(j=>q.cards[j]);
-    if(a.i===b.i){a.ok=b.ok=1;q.open=[];q.n++;dingOk();drawM();seq([[bien(),1]],q.n===4?()=>fin(2):null)}
+    if(a.i===b.i){a.ok=b.ok=1;q.open=[];q.n++;dingOk();drawM();seq([[a.x[0]]],q.n===4?()=>fin(2):null)}
     else{q.lock=1;setTimeout(()=>{dingBad();q.open=[];q.lock=0;drawM()},1100)}}}
 
 // ---------- 4. repite conmigo ----------
@@ -310,34 +333,39 @@ function drawR(){if(q.k>=q.it.length)return fin(3);const x=q.it[q.k];q.tries=0;
   <div class="row c" style="margin-top:8px"><button class="btn bl" onclick="say(q.it[q.k][0])">🔊 Escuchar</button><button class="btn" onclick="say(q.it[q.k][0],1)">🐢</button></div></div>
   <div class="center">${SR?`<button class="mic" id="mic" onclick="listen()" aria-label="Hablar">🎤</button><p id="msg" class="msg">Toca el micrófono y dilo 🗣️</p>`:`<p id="msg" class="msg">🗣️ ¡Dilo en voz alta 3 veces!</p><button class="btn go" onclick="okR()">¡Lo dije! ✓</button>`}</div>`;
   setTimeout(()=>say(x[0]),300)}
-function listen(){if(REC){try{REC.stop()}catch(e){}return}try{speechSynthesis.cancel()}catch(e){}
+function listen(){rec("mic","msg",judge)}
+function rec(mi,ms,cb){if(REC){try{REC.stop()}catch(e){}return}SQN++;try{speechSynthesis.cancel()}catch(e){}
   const r=new SR();REC=r;r.lang="en-US";r.interimResults=false;r.continuous=false;r.maxAlternatives=5;let got=false;
-  sec("mic").classList.add("on");sec("msg").textContent="Te escucho… 👂";
-  r.onresult=e=>{got=true;judge([...e.results[0]].map(a=>a.transcript))};
+  sec(mi).classList.add("on");sec(ms).textContent="Te escucho… 👂";
+  r.onresult=e=>{got=true;cb([...e.results[0]].map(a=>a.transcript))};
   r.onerror=e=>{if(e.error==="not-allowed")toast("Pídele a un adulto que permita el micrófono 🎤")};
-  r.onend=()=>{REC=null;const m=sec("mic");if(m)m.classList.remove("on");if(!got){const s=sec("msg");if(s)s.textContent="No te escuché bien. Toca el micrófono otra vez 🎤"}};
+  r.onend=()=>{REC=null;const m=sec(mi);if(m)m.classList.remove("on");if(!got){const s=sec(ms);if(s)s.textContent="No te escuché bien. Toca el micrófono otra vez 🎤"}};
   try{r.start()}catch(e){REC=null}}
-function judge(alts){const x=q.it[q.k],t=nrm(x[0]),tw=t.split(" ");
-  const ok=alts.some(a=>{const h=nrm(a),hw=h.split(" ");return h.includes(t)||sim(h,t)>=0.6||tw.filter(w=>hw.some(z=>sim(z,w)>=0.7)).length>=Math.ceil(tw.length*0.7)});
+function match(alts,tx){const t=nrm(tx),tw=t.split(" ");return alts.some(a=>{const h=nrm(a),hw=h.split(" ");return h.includes(t)||sim(h,t)>=0.6||tw.filter(w=>hw.some(z=>sim(z,w)>=0.7)).length>=Math.ceil(tw.length*0.7)})}
+function judge(alts){const x=q.it[q.k],ok=match(alts,x[0]);
   if(ok)okR();else{q.tries++;dingBad();const M=mal();sec("msg").innerHTML=`Escuché: «${alts[0]}»<br>${q.tries>=2?`¡Buen intento! 💪 <button class="btn sm go" onclick="q.k++;drawR()">Siguiente ▶</button>`:"🦉 "+M+" 👂"}`;seq([[M,1],[x[0]]])}}
-function okR(){if(!q.tries)q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b>`;q.k++;seq([[p,1]],drawR)}
+function okR(){if(!q.tries)q.ok++;dingOk();sec("msg").innerHTML=`✅ <b>${q.it[q.k][0]}</b>`;q.k++;SQN++;setTimeout(drawR,700)}
 
 // ---------- 5. mini diálogo ----------
 let DT=0;
 function dialogo(){view="act";DT++;
   app.innerHTML=hdr("💬 Mini diálogo")+`<p class="center">Escucha a Max 🦉 y a Leo 🧒. Toca un globo para oírlo otra vez.</p>
-  ${C().map((l,i)=>`<div class="line${l[0]==="🧒"?" me":""}" id="dl${i}"><div class="who">${l[0]}</div><div class="bub" onclick="say(C()[${i}][1])"><b>${l[1]}</b><div class="es">${l[2]}</div></div></div>`).join("")}
+  ${C().map((l,i)=>`<div class="line${l[0]==="🧒"?" me":""}" id="dl${i}"><div class="who">${l[0]}</div><div class="bub" onclick="say(C()[${i}][1],0,null,C()[${i}][0]==='🧒'?'leo':'')"><b>${l[1]}</b><div class="es">${l[2]}</div></div></div>`).join("")}
   <div class="row c"><button class="btn or" onclick="playD()">▶ Escuchar todo</button><button class="btn" onclick="playD(1)">🐢 Lento</button></div>
-  <div class="card center"><b>🎭 Ahora tú eres Leo 🧒</b><p class="es" style="margin:4px 0 8px">Max habla y tú lees en voz alta las frases de Leo.</p><button class="btn bl" onclick="roleD()">¡Jugar!</button><div id="rt" style="margin-top:10px"></div></div>
+  <div class="card center"><b>🎭 Ahora tú eres Leo 🧒</b><p class="es" style="margin:4px 0 8px">Max habla y tú dices las frases de Leo con el micrófono 🎤.</p><button class="btn bl" onclick="roleD()">¡Jugar!</button><div id="rt" style="margin-top:10px"></div></div>
   <div class="center"><button class="btn go" onclick="DT++;fin(4)">¡Terminé! ✓</button></div>`}
 function hl(i){document.querySelectorAll(".line .bub").forEach(b=>b.style.outline="");const e=sec("dl"+i);if(e)e.querySelector(".bub").style.outline="4px solid #FFC83D"}
-function playD(slow){const t=++DT,c=C();let k=0;const nx=()=>{if(t!==DT)return;if(k>=c.length){hl(-1);return}hl(k);const s=c[k][1];k++;say(s,slow,()=>setTimeout(nx,500))};nx()}
-function roleD(){const t=++DT,c=C();let k=0;
-  const nx=()=>{if(t!==DT)return;const rt=sec("rt");if(!rt)return;if(k>=c.length){hl(-1);rt.innerHTML="🎉 <b>Great job!</b> ¡Hiciste el diálogo completo!";dingOk();say("Great job!");return}
-    hl(k);const l=c[k];
-    if(l[0]==="🧒"){rt.innerHTML=`<p style="margin:0 0 6px">🧒 <b>¡Tu turno!</b> Di en voz alta:</p><div class="word" style="font-size:1.5rem">${l[1]}</div><div class="row c" style="margin-top:8px"><button class="btn" onclick="say('${esc(l[1])}')">🔊 Ayuda</button><button class="btn go" id="rgo">Ya lo dije ▶</button></div>`;
-      sec("rgo").onclick=()=>{dingOk();k++;nx()}}
-    else{rt.innerHTML="🦉 Max está hablando… 👂";k++;say(l[1],0,()=>setTimeout(nx,400))}};nx()}
+function playD(slow){DT++;seq(C().map((l,i)=>[l[1],0,l[0]==="🧒"?"leo":"",slow,()=>hl(i)]),()=>hl(-1))}
+function roleD(){const t=++DT,c=C();let k=0,tr=0;
+  const nx=()=>{if(t!==DT)return;const rt=sec("rt");if(!rt)return;if(k>=c.length){hl(-1);const f="¡Lo hiciste genial, "+am()+"! Completaste el diálogo.";rt.innerHTML="🎉 <b>"+f+"</b>";dingOk();sayEs(f);return}
+    hl(k);const l=c[k];tr=0;
+    if(l[0]==="🧒"){rt.innerHTML=`<p style="margin:0 0 6px">🧒 <b>¡Tu turno!</b> Di en voz alta:</p><div class="word" style="font-size:1.5rem">${l[1]}</div><div class="row c" style="margin-top:8px"><button class="btn" onclick="say('${esc(l[1])}',1)">🔊 Ayuda</button>${SR?`<button class="mic" id="rmic" style="width:84px;height:84px;font-size:2.2rem">🎤</button>`:`<button class="btn go" id="rgo">Ya lo dije ▶</button>`}</div><p class="msg center" id="rmsg">${SR?"Toca el micrófono y habla 🗣️":""}</p>`;
+      const ok=()=>{dingOk();sec("rmsg").innerHTML="✅ <b>"+l[1]+"</b>";k++;SQN++;setTimeout(nx,800)};
+      if(!SR){sec("rgo").onclick=ok;return}
+      sec("rmic").onclick=()=>rec("rmic","rmsg",alts=>{if(t!==DT)return;if(match(alts,l[1]))return ok();tr++;dingBad();
+        sec("rmsg").innerHTML=`Escuché: «${alts[0]}»<br>${tr>=2?`¡Buen intento! 💪 <button class="btn sm go" id="rsk">Siguiente ▶</button>`:"🦉 ¡Casi! Escucha cómo se dice y repite 👂"}`;
+        if(tr>=2)sec("rsk").onclick=()=>{k++;nx()};seq([[tr>=2?"No te preocupes, se dice así:":"¡Casi! Escucha cómo se dice:",1],[l[1],0,"",1]])})}
+    else{rt.innerHTML="🦉 Max está hablando… 👂";k++;seq([[l[1]]],()=>setTimeout(nx,300))}};nx()}
 
 // ---------- 6. reto final ----------
 function reto(){view="act";const w=shuf(W()),f=shuf(F()),it=[];
@@ -355,7 +383,7 @@ function drawT(){if(q.k>=q.it.length)return endT();const o=q.it[q.k],x=o.x,h=hdr
     <div class="row c" style="margin-top:12px"><button class="btn" onclick="q.pool=q.pool.concat(q.built);q.built=[];drawO()">↺ Otra vez</button><button class="btn go" id="chk" onclick="chkO()">Comprobar ✓</button></div><div class="center msg" id="msg"></div>`;drawO()}}
 function drawO(){sec("built").innerHTML=q.built.map((w,i)=>`<span class="chip" onclick="q.pool.push(q.built.splice(${i},1)[0]);drawO()">${w}</span>`).join("")||'<span class="es">Toca las palabras en orden 👇</span>';
   sec("pool").innerHTML=q.pool.map((w,i)=>`<span class="chip" onclick="q.built.push(q.pool.splice(${i},1)[0]);say('${esc(w)}');drawO()">${w}</span>`).join("")}
-function resT(ok,x){let pr;if(ok){q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b> <b>${x[0]}</b> = ${x[1]}`;pr=[[p,1]]}else{dingBad();sec("msg").innerHTML=`🦉 ¡Oh, no te desanimes! Era: <b>${x[0]}</b> ${x[2]} = ${x[1]} 💪`;pr=[["¡Oh, no te desanimes! La respuesta era:",1],[x[0]]]}q.k++;seq(pr,drawT)}
+function resT(ok,x){let pr;if(ok){q.ok++;dingOk();sec("msg").innerHTML=`✅ <b>${x[0]}</b> = ${x[1]}`;pr=[[x[0]]]}else{dingBad();sec("msg").innerHTML=`🦉 ¡Oh, no te desanimes! Era: <b>${x[0]}</b> ${x[2]} = ${x[1]} 💪`;pr=[["¡Oh, no te desanimes! La respuesta era:",1],[x[0]]]}q.k++;seq(pr,drawT)}
 function ansT(b){const x=q.it[q.k].x;document.querySelectorAll(".opt").forEach(o=>{o.disabled=true;if(o.dataset.r==="1")o.classList.add("ok")});if(b.dataset.r!=="1")b.classList.add("bad");resT(b.dataset.r==="1",x)}
 function chkO(){const x=q.it[q.k].x;if(q.pool.length)return toast("Usa todas las palabras 😉");sec("chk").disabled=true;resT(nrm(q.built.join(" "))===nrm(x[0]),x)}
 function endT(){const n=q.it.length,pct=Math.round(q.ok/n*100),s=stars(pct),pass=pct>=70,d=D[cur];registrar(pct);
