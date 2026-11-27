@@ -35,7 +35,7 @@ header{height:8px;background:linear-gradient(90deg,#FF7BAC 0 20%,#FFC83D 20% 40%
 .msg{min-height:44px;margin-top:10px;font-size:1.1rem}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .opt{background:#fff;border:4px solid transparent;border-radius:22px;font-size:3.8rem;padding:10px;cursor:pointer;box-shadow:0 4px 0 #0002;font-family:inherit;line-height:1.2}
-.opt.txt{font-size:1.5rem;font-weight:700;padding:14px 8px}
+.opt small{display:block;font-size:1.05rem;font-weight:700;color:var(--mut);line-height:1.2}.opt.txt{font-size:1.5rem;font-weight:700;padding:14px 8px}
 .opt.ok{border-color:var(--ok);background:#E8F8EC}.opt.bad{border-color:var(--bad);background:#FDECEC}
 .mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .mc{aspect-ratio:1;border-radius:16px;background:var(--pu);color:#fff;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;cursor:pointer;box-shadow:0 4px 0 #0002;text-align:center;padding:4px;user-select:none;line-height:1.05}
@@ -71,7 +71,7 @@ select{font:inherit;padding:8px;border-radius:12px;border:2px solid #eadfb8;widt
 <div class="mx" id="mx" aria-hidden="true"><div class="mb" id="mxt"></div><svg width="110" height="110" viewBox="0 0 64 64"><path d="M12 16 L22 23 L14 26 Z M52 16 L42 23 L50 26 Z" fill="#8B5E3C"/><ellipse class="wl" cx="13" cy="44" rx="5" ry="11" fill="#6E4529"/><ellipse class="wr" cx="51" cy="44" rx="5" ry="11" fill="#6E4529"/><ellipse cx="32" cy="38" rx="22" ry="24" fill="#8B5E3C"/><ellipse cx="32" cy="45" rx="13" ry="14" fill="#E9C9A0"/><g class="ey"><circle cx="23" cy="29" r="9" fill="#fff"/><circle cx="41" cy="29" r="9" fill="#fff"/><circle cx="24" cy="30" r="4.2" fill="#222"/><circle cx="40" cy="30" r="4.2" fill="#222"/><circle cx="25.3" cy="28.6" r="1.3" fill="#fff"/><circle cx="41.3" cy="28.6" r="1.3" fill="#fff"/></g><path class="bk" d="M29 36 L32 40 L35 36 Z" fill="#F2A33A"/><path d="M22 60 L26 56 L30 60 M34 60 L38 56 L42 60" stroke="#F2A33A" stroke-width="3" fill="none" stroke-linecap="round"/></svg></div>
 <script>
 const B=[
-{t:"Hello!",es:"Saludos",e:"👋",w:[["hello","hola","👋","jelóu"],["goodbye","adiós","🙋","gudbái"],["please","por favor","🙏","plíis"],["thank you","gracias","💝","zénkiu"],["yes","sí","✅","iés"],["no","no","❌","nóu"],["friend","amigo","🤝","frend"],["name","nombre","📛","néim"]],
+{t:"Hello!",es:"Saludos",e:"👋",w:[["hello","hola","👋😃","jelóu"],["goodbye","adiós","👋🚶","gudbái"],["please","por favor","🙏","plíis"],["thank you","gracias","😊🎁","zénkiu"],["yes","sí","👍✅","iés"],["no","no","👎❌","nóu"],["friend","amigo","👫","frend"],["name","nombre","🏷️","néim"]],
 f:[["Hello! I am Max.","¡Hola! Soy Max.","🦉"],["What is your name?","¿Cómo te llamas?","📛"],["My name is Leo.","Me llamo Leo.","🧒"]],
 c:[["🦉","Hello! I am Max.","¡Hola! Soy Max."],["🧒","Hello, Max!","¡Hola, Max!"],["🦉","What is your name?","¿Cómo te llamas?"],["🧒","My name is Leo.","Me llamo Leo."]],
 tip:"Para saludar dices <b>Hello</b> (jelóu) y para despedirte <b>Goodbye</b> (gudbái). ¡Siempre con una sonrisa! 😊"},
@@ -92,7 +92,7 @@ null,
 f:[["This is my mom.","Esta es mi mamá.","👩"],["I love my family.","Quiero a mi familia.","❤️"],["I have a sister.","Tengo una hermana.","👧"]],
 c:[["🦉","Who is she?","¿Quién es ella?"],["🧒","She is my mom.","Ella es mi mamá."],["🦉","Who is he?","¿Quién es él?"],["🧒","He is my brother.","Él es mi hermano."]],
 tip:"<b>He</b> (ji) es para un chico y <b>she</b> (shi) para una chica. <b>She is my mom</b> = ella es mi mamá."},
-{t:"My body",es:"Mi cuerpo",e:"🙂",w:[["eyes","ojos","👀","áis"],["nose","nariz","👃","nóus"],["mouth","boca","👄","máuz"],["ears","orejas","👂","íirs"],["hands","manos","👐","jands"],["feet","pies","🦶","fíit"],["hair","cabello","💇","jer"],["teeth","dientes","🦷","tíiz"]],
+{t:"My body",es:"Mi cuerpo",e:"🙂",w:[["eyes","ojos","👀","áis"],["nose","nariz","👃","nóus"],["mouth","boca","👄","máuz"],["ears","orejas","👂","íirs"],["hands","manos","👐","jands"],["feet","pies","🦶","fíit"],["hair","cabello","👱","jer"],["teeth","dientes","🦷","tíiz"]],
 f:[["Touch your nose!","¡Toca tu nariz!","👃"],["I have two eyes.","Tengo dos ojos.","👀"],["Clap your hands!","¡Aplaude!","👏"]],
 c:[["🦉","Touch your nose!","¡Toca tu nariz!"],["🧒","Here is my nose!","¡Aquí está mi nariz!"],["🦉","Clap your hands!","¡Aplaude!"],["🧒","Clap, clap, clap!","¡Plas, plas, plas!"]],
 tip:"Cuando hay más de uno se agrega <b>-s</b>: <b>one eye</b> → <b>two eyes</b>. ¡Ojo! Un pie es <b>foot</b> y dos pies son <b>feet</b>."},
@@ -113,11 +113,11 @@ tip:"<b>in</b> = dentro de, <b>on</b> = encima de. <b>The cat is on the bed</b> 
 f:[["Open your book.","Abre tu libro.","📕"],["I have a pencil.","Tengo un lápiz.","✏️"],["Good morning, teacher!","¡Buenos días, profesora!","🧑‍🏫"]],
 c:[["🦉","Good morning!","¡Buenos días!"],["🧒","Good morning, teacher!","¡Buenos días, profesora!"],["🦉","Open your book, please.","Abre tu libro, por favor."],["🧒","Yes! Page one.","¡Sí! Página uno."]],
 tip:"En clase escucharás órdenes: <b>open</b> (abre), <b>close</b> (cierra), <b>listen</b> (escucha) y <b>look</b> (mira)."},
-{t:"Toys",es:"Juguetes",e:"🧸",w:[["ball","pelota","⚽","bol"],["doll","muñeca","🪆","dol"],["teddy bear","osito de peluche","🧸","tédi ber"],["kite","cometa","🪁","káit"],["car","carro","🚗","kar"],["robot","robot","🤖","róubot"],["game","videojuego","🎮","guéim"],["puzzle","rompecabezas","🧩","pásol"]],
+{t:"Toys",es:"Juguetes",e:"🧸",w:[["ball","pelota","⚽","bol"],["doll","muñeca","👧🎀","dol"],["teddy bear","osito de peluche","🧸","tédi ber"],["kite","cometa","🪁","káit"],["car","carro","🚗","kar"],["robot","robot","🤖","róubot"],["game","videojuego","🎮","guéim"],["puzzle","rompecabezas","🧩","pásol"]],
 f:[["Let's play!","¡Juguemos!","🎉"],["My ball is red.","Mi pelota es roja.","⚽"],["I have a robot.","Tengo un robot.","🤖"]],
 c:[["🦉","Let's play!","¡Juguemos!"],["🧒","Yes! Let's play with the ball.","¡Sí! Juguemos con la pelota."],["🦉","Where is the ball?","¿Dónde está la pelota?"],["🧒","It is under the bed!","¡Está debajo de la cama!"]],
 tip:"<b>Let's</b> + acción = ¡vamos a…!: <b>Let's play</b> = ¡juguemos!, <b>Let's go</b> = ¡vamos!"},
-{t:"Feelings",es:"Sentimientos",e:"😀",w:[["happy","feliz","😀","jápi"],["sad","triste","😢","sad"],["angry","enojado","😠","ángri"],["tired","cansado","😴","táierd"],["hungry","con hambre","🤤","jángri"],["scared","asustado","😨","skerd"],["sick","enfermo","🤒","sik"],["fine","bien","👍","fáin"]],
+{t:"Feelings",es:"Sentimientos",e:"😀",w:[["happy","feliz","😀","jápi"],["sad","triste","😢","sad"],["angry","enojado","😠","ángri"],["tired","cansado","😴","táierd"],["hungry","con hambre","🤤","jángri"],["scared","asustado","😨","skerd"],["sick","enfermo","🤒","sik"],["fine","bien","🙂👌","fáin"]],
 f:[["How are you?","¿Cómo estás?","❓"],["I am happy.","Estoy feliz.","😀"],["I am tired.","Estoy cansado.","😴"]],
 c:[["🦉","How are you?","¿Cómo estás?"],["🧒","I am happy! And you?","¡Estoy feliz! ¿Y tú?"],["🦉","I am fine, thank you.","Estoy bien, gracias."],["🧒","Great!","¡Genial!"]],
 tip:"Para decir cómo te sientes: <b>I am</b> + sentimiento. <b>I am sad</b> = estoy triste."},
@@ -130,11 +130,11 @@ tip:"Para hablar del clima siempre empiezas con <b>It is</b>: <b>It is hot</b> =
 f:[["The sun is yellow.","El sol es amarillo.","🌞"],["I see a star.","Veo una estrella.","⭐"],["The tree is big.","El árbol es grande.","🌳"]],
 c:[["🦉","Look at the sky!","¡Mira el cielo!"],["🧒","I see the moon.","Veo la luna."],["🦉","And the stars?","¿Y las estrellas?"],["🧒","Yes! I see many stars.","¡Sí! Veo muchas estrellas."]],
 tip:"<b>I see</b> (ái síi) = veo. <b>I see a flower</b> = veo una flor 🌸."},
-{t:"Actions",es:"Acciones",e:"🏃",w:[["run","correr","🏃","ran"],["jump","saltar","🤸","yamp"],["swim","nadar","🏊","suím"],["dance","bailar","💃","dans"],["sing","cantar","🎤","sing"],["eat","comer","🍽️","íit"],["sleep","dormir","😴","slíip"],["read","leer","📖","ríid"]],
+{t:"Actions",es:"Acciones",e:"🏃",w:[["run","correr","🏃","ran"],["jump","saltar","🤸","yamp"],["swim","nadar","🏊","suím"],["dance","bailar","💃","dans"],["sing","cantar","🎤","sing"],["eat","comer","😋🍽️","íit"],["sleep","dormir","😴","slíip"],["read","leer","📖","ríid"]],
 f:[["I can run.","Puedo correr.","🏃"],["Let's dance!","¡Bailemos!","💃"],["Jump, jump, jump!","¡Salta, salta, salta!","🤸"]],
 c:[["🦉","Can you swim?","¿Puedes nadar?"],["🧒","Yes, I can swim!","¡Sí, puedo nadar!"],["🦉","Can you sing?","¿Puedes cantar?"],["🧒","Yes! La, la, la!","¡Sí! ¡La, la, la!"]],
 tip:"<b>I can</b> = puedo. <b>I can jump</b> = puedo saltar. Para preguntar: <b>Can you…?</b> = ¿puedes…?"},
-{t:"Sports",es:"Deportes",e:"⚽",w:[["soccer","fútbol","⚽","sóker"],["basketball","básquet","🏀","básketbol"],["volleyball","vóley","🏐","válibol"],["tennis","tenis","🎾","ténis"],["bike","bicicleta","🚴","báik"],["skate","patineta","🛹","skéit"],["baseball","béisbol","⚾","béisbol"],["win","ganar","🏆","uín"]],
+{t:"Sports",es:"Deportes",e:"⚽",w:[["soccer","fútbol","⚽","sóker"],["basketball","básquet","🏀","básketbol"],["volleyball","vóley","🏐","válibol"],["tennis","tenis","🎾","ténis"],["bike","bicicleta","🚴","báik"],["skate","patineta","🛹","skéit"],["baseball","béisbol","⚾","béisbol"],["win","ganar","🥇","uín"]],
 f:[["I play soccer.","Juego fútbol.","⚽"],["Let's ride a bike!","¡Montemos bici!","🚴"],["We win!","¡Ganamos!","🏆"]],
 c:[["🦉","Do you play soccer?","¿Juegas fútbol?"],["🧒","Yes! I play soccer at school.","¡Sí! Juego fútbol en el colegio."],["🦉","Is it fun?","¿Es divertido?"],["🧒","Yes, it is fun!","¡Sí, es divertido!"]],
 tip:"Con los deportes de pelota se usa <b>play</b>: <b>I play tennis</b> = juego tenis 🎾."},
@@ -147,7 +147,7 @@ tip:"Para decir qué quieres ser: <b>I want to be a</b> + oficio. <b>I want to b
 f:[["I go to school by bus.","Voy al colegio en bus.","🚌"],["The plane is fast.","El avión es rápido.","✈️"],["Look at the train!","¡Mira el tren!","🚆"]],
 c:[["🦉","How do you go to school?","¿Cómo vas al colegio?"],["🧒","I go by bus.","Voy en bus."],["🦉","And your mom?","¿Y tu mamá?"],["🧒","She goes by car.","Ella va en carro."]],
 tip:"<b>by</b> + transporte = en: <b>by bus</b> = en bus, <b>by car</b> = en carro 🚗."},
-{t:"Places",es:"Lugares",e:"🏙️",w:[["park","parque","🏞️","park"],["hospital","hospital","🏥","jóspital"],["store","tienda","🏪","stor"],["beach","playa","🏖️","bíich"],["zoo","zoológico","🦁","zúu"],["library","biblioteca","📚","láibreri"],["church","iglesia","⛪","cherch"],["bank","banco","🏦","bank"]],
+{t:"Places",es:"Lugares",e:"🏙️",w:[["park","parque","🏞️","park"],["hospital","hospital","🏥","jóspital"],["store","tienda","🏪","stor"],["beach","playa","🏖️","bíich"],["zoo","zoológico","🦁🦓","zúu"],["library","biblioteca","📚","láibreri"],["church","iglesia","⛪","cherch"],["bank","banco","🏦","bank"]],
 f:[["Let's go to the park!","¡Vamos al parque!","🏞️"],["I am at the beach.","Estoy en la playa.","🏖️"],["Where is the zoo?","¿Dónde está el zoológico?","🦁"]],
 c:[["🦉","Where are you going?","¿A dónde vas?"],["🧒","I am going to the zoo!","¡Voy al zoológico!"],["🦉","With who?","¿Con quién?"],["🧒","With my family.","Con mi familia."]],
 tip:"<b>Where</b> (uér) = dónde. <b>Where is the park?</b> = ¿dónde está el parque?"},
@@ -168,7 +168,7 @@ tip:"<b>for you</b> (for iú) = para ti. Cuando te dan un regalo, di <b>Thank yo
 f:[["The mouse is small.","El ratón es pequeño.","🐭"],["The turtle is slow.","La tortuga es lenta.","🐢"],["The elephant is big.","El elefante es grande.","🐘"]],
 c:[["🦉","Is the cheetah slow?","¿El guepardo es lento?"],["🧒","No! It is fast.","¡No! Es rápido."],["🦉","Is the turtle fast?","¿La tortuga es rápida?"],["🧒","No! It is slow.","¡No! Es lenta."]],
 tip:"Para preguntar se pone <b>is</b> primero: <b>It is big</b> → <b>Is it big?</b> (¿es grande?)."},
-{t:"My day",es:"Mi día",e:"⏰",w:[["wake up","despertarse","⏰","uéik ap"],["breakfast","desayuno","🥣","brékfast"],["brush teeth","cepillarse","🪥","brash tíiz"],["lunch","almuerzo","🥪","lanch"],["play","jugar","🤾","pléi"],["homework","tarea","📝","jóumuerk"],["dinner","cena","🍝","díner"],["go to bed","ir a dormir","🛌","góu tu bed"]],
+{t:"My day",es:"Mi día",e:"⏰",w:[["wake up","despertarse","⏰","uéik ap"],["breakfast","desayuno","🥣","brékfast"],["brush teeth","cepillarse","🪥","brash tíiz"],["lunch","almuerzo","🥪","lanch"],["play","jugar","⚽🧒","pléi"],["homework","tarea","📝","jóumuerk"],["dinner","cena","🍝","díner"],["go to bed","ir a dormir","🛌","góu tu bed"]],
 f:[["I wake up at seven.","Me levanto a las siete.","⏰"],["I eat breakfast.","Tomo el desayuno.","🥣"],["I do my homework.","Hago mi tarea.","📝"]],
 c:[["🦉","What time do you wake up?","¿A qué hora te levantas?"],["🧒","I wake up at seven.","Me levanto a las siete."],["🦉","Do you eat breakfast?","¿Tomas desayuno?"],["🧒","Yes, I eat bread and milk.","Sí, como pan con leche."]],
 tip:"<b>at</b> + hora: <b>at seven</b> = a las siete. ¡Así cuentas tu día! ⏰"},
@@ -266,7 +266,8 @@ const hdr=(t,k,n)=>`<div class="top"><button class="btn sm" onclick="camino()">�
 const BIEN=()=>["¡Muy bien! Sigue así.","¡Excelente, "+am()+"! Lo hiciste muy bien.","¡Genial! Vas muy bien.","¡Súper! Sigue así.","¡Eso es! Eres "+(sexo()==="F"?"una campeona":"un campeón")+"."],MAL=()=>["¡Oh, no te desanimes! Inténtalo otra vez.","¡Casi! Tú puedes.","No pasa nada, "+am()+". Vuelve a intentarlo.","¡Ánimo! La próxima te sale."];
 const bien=()=>rnd(BIEN()),mal=()=>rnd(MAL());
 let SQN=0;
-function seq(parts,next,max){const id=++SQN;let k=0,ok=false;const go=()=>{if(ok||id!==SQN)return;ok=true;if(next)next()};setTimeout(go,max||9000);const run=()=>{if(id!==SQN)return;if(k>=parts.length){setTimeout(go,300);return}const p=parts[k++];(p[1]?sayEs:say)(p[0],run)};run()}
+const dur=(t,es)=>es?400+t.length*70:500+t.length*95;
+function seq(parts,next){const id=++SQN;let k=0;const run=()=>{if(id!==SQN)return;if(k>=parts.length){if(next)next();return}const p=parts[k++],me=k;let ok=false;const go=()=>{if(ok||id!==SQN||k!==me)return;ok=true;run()};(p[1]?sayEs:say)(p[0],go);setTimeout(go,dur(p[0],p[1]))};run()}
 const FIN=["¡Genial! Lo has hecho muy bien.","¡Muy bien! Lo lograste.","¡Excelente trabajo!","¡Súper! Lo hiciste genial."];
 function fin(k){markSt(k);confetti();fanfare();const p=rnd(PRAISE),nx=k+1<SX.length?k+1:-1,ft=rnd(FIN)+(nx>=0?" Continúa con la siguiente actividad.":"");setTimeout(()=>sayEs(ft),500);
   app.innerHTML=hdr(SX[k][0]+" "+SX[k][1])+`<div class="card center"><div style="font-size:4rem">🎉</div><div class="max" style="justify-content:center">${OWL(70)}<div class="bub"><b>${p[0]}</b><br>${ft}</div></div>
@@ -285,9 +286,9 @@ function drawA(){const x=q.it[q.k],last=q.k===q.it.length-1;
 function escucha(){view="act";q={it:shuf(W()).slice(0,8),k:0,ok:0,miss:0};drawE()}
 function drawE(){if(q.k>=q.it.length)return fin(1);const x=q.it[q.k],op=shuf([x,...shuf(W().filter(z=>z!==x)).slice(0,3)]);q.miss=0;
   app.innerHTML=hdr("🎧 Escucha y toca",q.k,q.it.length)+`<p class="center">Escucha y toca el dibujo correcto 👆</p><div class="center"><button class="btn or" style="font-size:1.4rem;padding:14px 26px" onclick="say(q.it[q.k][0])">🔊 ¡Escuchar!</button> <button class="btn" onclick="say(q.it[q.k][0],1)">🐢</button></div>
-  <div class="opts" style="margin-top:14px">${op.map(o=>`<button class="opt" data-r="${o===x?1:0}" onclick="tapE(this)">${o[2]}</button>`).join("")}</div><div class="center msg" id="msg"></div>`;setTimeout(()=>say(x[0]),300)}
+  <div class="opts" style="margin-top:14px">${op.map(o=>`<button class="opt" data-r="${o===x?1:0}" onclick="tapE(this)">${o[2]}<small>${o[1]}</small></button>`).join("")}</div><div class="center msg" id="msg"></div>`;setTimeout(()=>say(x[0]),300)}
 function tapE(b){const x=q.it[q.k];
-  if(b.dataset.r==="1"){document.querySelectorAll(".opt").forEach(o=>o.disabled=true);b.classList.add("ok");if(!q.miss)q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b> <b>${x[0]}</b> = ${x[1]}`;q.k++;seq([[p,1],[x[0]]],drawE)}
+  if(b.dataset.r==="1"){document.querySelectorAll(".opt").forEach(o=>o.disabled=true);b.classList.add("ok");if(!q.miss)q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b> <b>${x[0]}</b> = ${x[1]}`;q.k++;seq([[p,1]],drawE)}
   else{b.classList.add("bad");b.disabled=true;q.miss=1;dingBad();const m=mal();sec("msg").innerHTML="🦉 "+m+" 👂";seq([[m,1],[x[0]]])}}
 
 // ---------- 3. memoria ----------
@@ -295,7 +296,7 @@ function memoria(){view="act";const w=shuf(W()).slice(0,4);q={cards:shuf(w.flatM
 function drawM(){app.innerHTML=hdr("🃏 Memoria",q.n,4)+`<p class="center">Voltea dos cartas y junta el <b>dibujo</b> con su <b>palabra</b> 🧠</p><div class="mem">${q.cards.map((c,k)=>{const op=c.ok||q.open.includes(k);return `<div class="mc${op?" open":""}${c.ok?" done":""}${c.e?"":" t"}" onclick="flipM(${k})">${op?c.t:"?"}</div>`}).join("")}</div>`}
 function flipM(k){const c=q.cards[k];if(q.lock||c.ok||q.open.includes(k))return;q.open.push(k);if(!c.e)say(c.x[0]);drawM();
   if(q.open.length===2){const [a,b]=q.open.map(j=>q.cards[j]);
-    if(a.i===b.i){a.ok=b.ok=1;q.open=[];q.n++;dingOk();drawM();seq([[bien(),1],[a.x[0]]],q.n===4?()=>fin(2):null)}
+    if(a.i===b.i){a.ok=b.ok=1;q.open=[];q.n++;dingOk();drawM();seq([[bien(),1]],q.n===4?()=>fin(2):null)}
     else{q.lock=1;setTimeout(()=>{dingBad();q.open=[];q.lock=0;drawM()},1100)}}}
 
 // ---------- 4. repite conmigo ----------
@@ -345,7 +346,7 @@ function reto(){view="act";const w=shuf(W()),f=shuf(F()),it=[];
 function drawT(){if(q.k>=q.it.length)return endT();const o=q.it[q.k],x=o.x,h=hdr("🏆 Reto final",q.k,q.it.length)+`<p class="center es">Pregunta ${q.k+1} de ${q.it.length} · ⭐ ${q.ok}</p>`;
   if(o.t==="le"){const op=shuf([x,...shuf(W().filter(z=>z!==x)).slice(0,3)]);
     app.innerHTML=h+`<p class="center">🎧 Escucha y toca el dibujo</p><div class="center"><button class="btn or" style="font-size:1.3rem" onclick="say(q.it[q.k].x[0])">🔊 ¡Escuchar!</button> <button class="btn" onclick="say(q.it[q.k].x[0],1)">🐢</button></div>
-    <div class="opts" style="margin-top:12px">${op.map(z=>`<button class="opt" data-r="${z===x?1:0}" onclick="ansT(this)">${z[2]}</button>`).join("")}</div><div class="center msg" id="msg"></div>`;setTimeout(()=>say(x[0]),300)}
+    <div class="opts" style="margin-top:12px">${op.map(z=>`<button class="opt" data-r="${z===x?1:0}" onclick="ansT(this)">${z[2]}<small>${z[1]}</small></button>`).join("")}</div><div class="center msg" id="msg"></div>`;setTimeout(()=>say(x[0]),300)}
   else if(o.t==="ew"){const op=shuf([x,...shuf(W().filter(z=>z!==x)).slice(0,2)]);
     app.innerHTML=h+`<p class="center">👀 ¿Cómo se dice en inglés?</p><div class="center huge">${x[2]}</div>
     <div class="opts" style="grid-template-columns:1fr">${op.map(z=>`<button class="opt txt" data-r="${z===x?1:0}" onclick="ansT(this)">${z[0]}</button>`).join("")}</div><div class="center msg" id="msg"></div>`}
@@ -354,7 +355,7 @@ function drawT(){if(q.k>=q.it.length)return endT();const o=q.it[q.k],x=o.x,h=hdr
     <div class="row c" style="margin-top:12px"><button class="btn" onclick="q.pool=q.pool.concat(q.built);q.built=[];drawO()">↺ Otra vez</button><button class="btn go" id="chk" onclick="chkO()">Comprobar ✓</button></div><div class="center msg" id="msg"></div>`;drawO()}}
 function drawO(){sec("built").innerHTML=q.built.map((w,i)=>`<span class="chip" onclick="q.pool.push(q.built.splice(${i},1)[0]);drawO()">${w}</span>`).join("")||'<span class="es">Toca las palabras en orden 👇</span>';
   sec("pool").innerHTML=q.pool.map((w,i)=>`<span class="chip" onclick="q.built.push(q.pool.splice(${i},1)[0]);say('${esc(w)}');drawO()">${w}</span>`).join("")}
-function resT(ok,x){let pr;if(ok){q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b> <b>${x[0]}</b> = ${x[1]}`;pr=[[p,1],[x[0]]]}else{dingBad();sec("msg").innerHTML=`🦉 ¡Oh, no te desanimes! Era: <b>${x[0]}</b> ${x[2]} = ${x[1]} 💪`;pr=[["¡Oh, no te desanimes! La respuesta era:",1],[x[0]]]}q.k++;seq(pr,drawT)}
+function resT(ok,x){let pr;if(ok){q.ok++;dingOk();const p=bien();sec("msg").innerHTML=`🦉 <b>${p}</b> <b>${x[0]}</b> = ${x[1]}`;pr=[[p,1]]}else{dingBad();sec("msg").innerHTML=`🦉 ¡Oh, no te desanimes! Era: <b>${x[0]}</b> ${x[2]} = ${x[1]} 💪`;pr=[["¡Oh, no te desanimes! La respuesta era:",1],[x[0]]]}q.k++;seq(pr,drawT)}
 function ansT(b){const x=q.it[q.k].x;document.querySelectorAll(".opt").forEach(o=>{o.disabled=true;if(o.dataset.r==="1")o.classList.add("ok")});if(b.dataset.r!=="1")b.classList.add("bad");resT(b.dataset.r==="1",x)}
 function chkO(){const x=q.it[q.k].x;if(q.pool.length)return toast("Usa todas las palabras 😉");sec("chk").disabled=true;resT(nrm(q.built.join(" "))===nrm(x[0]),x)}
 function endT(){const n=q.it.length,pct=Math.round(q.ok/n*100),s=stars(pct),pass=pct>=70,d=D[cur];registrar(pct);
